@@ -1,35 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
+import { URL } from "../../constants/url";
 
-const url = "http://localhost:8080";
 const emailRegExp =
   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 const passwordRegExp = /^[A-Za-z0-9]{8,}$/;
 
-const fetchSignUpApi = async (email, password) => {
+const fetchAuth = async (path, email, password) => {
   try {
-    const res = await fetch(`${url}/users/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    const data = res.json();
-
-    return data;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const fetchSignInApi = async (email, password) => {
-  try {
-    const res = await fetch(`${url}/users/login`, {
+    const res = await fetch(`${URL}${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +68,11 @@ export const Auth = () => {
 
   const handleClickSignUpButton = async () => {
     if (activeButton) {
-      const data = await fetchSignUpApi(email.current, password.current);
+      const data = await fetchAuth(
+        "/users/create",
+        email.current,
+        password.current
+      );
 
       if (data?.message) return window.alert(data.message);
 
@@ -98,7 +82,11 @@ export const Auth = () => {
 
   const handleClickSignInButton = async () => {
     if (activeButton) {
-      const data = await fetchSignInApi(email.current, password.current);
+      const data = await fetchAuth(
+        "/users/login",
+        email.current,
+        password.current
+      );
 
       if (data?.message) {
         window.localStorage.setItem("token", data.token);
