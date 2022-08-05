@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { TodoDetail } from "../../components/feature/Todo/TodoDetail";
 import { TodoList } from "../../components/feature/Todo/TodoList";
 import { URL } from "../../constants/url";
 import { useFetch } from "../../hooks/useFetch";
@@ -69,7 +68,6 @@ export const Todo = () => {
         data={data}
         refetch={refetch}
       />
-      <TodoDetail />
     </>
   );
 };
